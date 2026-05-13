@@ -115,16 +115,16 @@ NOTAS_FILE = os.path.join(DATA_DIR, "notas_atividades.csv")
 # ============================================
 
 USUARIOS = {
-    "fernando": {"1234", "nome": "Fernando Junior", "role": "Admin"},
-    "mayra": {"1234", "nome": "Mayra", "role": "associado"},
-    "carol": {"1234", "nome": "Carol", "role": "associado"},
-    "amanda": {"1234", "nome": "Amanda", "role": "associado"},
-    "helen": {"1234", "nome": "Helen", "role": "associado"},
-    "nicole": {"1234", "nome": "Nicole", "role": "associado"},
-    "fernanda": {"1234", "nome": "Fernanda", "role": "associado"},
-    "byanca": {"1234", "nome": "Byanca", "role": "associado"},
-    "kalebe": {"1234e", "nome": "Kalebe", "role": "associado"},
-    "nicole2": {"1234", "nome": "Nicole", "role": "associado"},
+    "fernando": {"senha": "fer123", "nome": "Fernando Junior", "role": "admin"},
+    "mayra": {"senha": "may123", "nome": "Mayra", "role": "associado"},
+    "carol": {"senha": "car123", "nome": "Carol", "role": "associado"},
+    "amanda": {"senha": "ama123", "nome": "Amanda", "role": "associado"},
+    "helen": {"senha": "hel123", "nome": "Helen", "role": "associado"},
+    "nicole": {"senha": "nic123", "nome": "Nicole", "role": "associado"},
+    "nicole2": {"senha": "nic123", "nome": "Nicole", "role": "associado"},
+    "fernanda": {"senha": "fer123", "nome": "Fernanda", "role": "associado"},
+    "byanca": {"senha": "bya123", "nome": "Byanca", "role": "associado"},
+    "kalebe": {"senha": "kal123", "nome": "Kalebe", "role": "associado"},
 }
 
 # ============================================
