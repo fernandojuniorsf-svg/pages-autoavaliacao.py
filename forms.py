@@ -16,6 +16,15 @@ st.set_page_config(
 
 # CSS CUSTOMIZADO - CORES AMAZON
 st.markdown("""
+    /* Inputs visiveis */
+    input, textarea, select {
+        background-color: #FFFFFF !important;
+        color: #232F3E !important;
+    }
+    input::placeholder, textarea::placeholder {
+        color: #999999 !important;
+    }
+
 <style>
     /* Header */
     .stApp header {
