@@ -115,7 +115,7 @@ NOTAS_FILE = os.path.join(DATA_DIR, "notas_atividades.csv")
 # ============================================
 
 USUARIOS = {
-    "fernando": {"1234", "nome": "Fernando Junior", "role[PASSWORD]"},
+    "fernando": {"1234", "nome": "Fernando Junior", "role": "Admin"},
     "mayra": {"1234", "nome": "Mayra", "role": "associado"},
     "carol": {"1234", "nome": "Carol", "role": "associado"},
     "amanda": {"1234", "nome": "Amanda", "role": "associado"},
