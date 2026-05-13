@@ -6,65 +6,85 @@ import os
 import json
 
 # ============================================
-# CONFIGURAÇÃO INICIAL
+# CONFIGURACAO INICIAL
 # ============================================
 
-st.set_page_config(page_title="EUA8 - Autoavaliação", page_icon="📋", layout="centered")
+st.set_page_config(page_title="EUA8 - Formularios", page_icon="📋", layout="centered")
 
-# Pasta para salvar dados
 DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
 
-RESPOSTAS_FILE = os.path.join(DATA_DIR, "respostas_autoavaliacao.csv")
+RESPOSTAS_FILE = os.path.join(DATA_DIR, "respostas.csv")
 PERGUNTAS_FILE = os.path.join(DATA_DIR, "perguntas.json")
+NOTAS_FILE = os.path.join(DATA_DIR, "notas_atividades.csv")
 
 # ============================================
-# USUÁRIOS E SENHAS
+# USUARIOS E SENHAS
 # ============================================
 
 USUARIOS = {
-    "fernando": {"senha":[PASSWORD]26", "nome": "Fernando Júnior", "role": "admin"},
-    "mayra": {"senha":[PASSWORD]ra", "nome": "Mayra", "role": "associado"},
-    "carol": {"senha":[PASSWORD]ol", "nome": "Carol", "role": "associado"},
-    "amanda": {"senha":[PASSWORD]da", "nome": "Amanda", "role": "associado"},
-    "helen": {"senha":[PASSWORD]en", "nome": "Helen", "role": "associado"},
-    "nicole": {"senha":[PASSWORD]le", "nome": "Nicole", "role": "associado"},
-    "fernanda": {"senha":[PASSWORD]da", "nome": "Fernanda", "role": "associado"},
-    "byanca": {"senha":[PASSWORD]ca", "nome": "Byanca", "role": "associado"},
-    "kalebe": {"senha":[PASSWORD]be", "nome": "Kalebe", "role": "associado"},
+    "fernando": {"senha"[PASSWORD]026", "nome": "Fernando Junior", "role": "admin"},
+    "mayra": {"senha"[PASSWORD]yra", "nome": "Mayra", "role": "associado"},
+    "carol": {"senha"[PASSWORD]rol", "nome": "Carol", "role": "associado"},
+    "amanda": {"senha"[PASSWORD]nda", "nome": "Amanda", "role": "associado"},
+    "helen": {"senha"[PASSWORD]len", "nome": "Helen", "role": "associado"},
+    "nicole": {"senha"[PASSWORD]ole", "nome": "Nicole", "role": "associado"},
+    "fernanda": {"senha"[PASSWORD]nda", "nome": "Fernanda", "role": "associado"},
+    "byanca": {"senha"[PASSWORD]nca", "nome": "Byanca", "role": "associado"},
+    "kalebe": {"senha"[PASSWORD]ebe", "nome": "Kalebe", "role": "associado"},
 }
 
 # ============================================
-# PERGUNTAS PADRÃO (editáveis pelo admin)
+# ATIVIDADES PARA NOTA
+# ============================================
+
+ATIVIDADES = [
+    "Pick to Buffer",
+    "Stow",
+    "Receiving (Recebimento)",
+    "Unloading (Descarregamento)",
+    "Loading (Carregamento)",
+    "Yard Marshall (Patio)",
+    "Spider / Fechamento",
+    "Comunicacao pelo radio",
+    "Organizacao (5S)",
+    "Seguranca",
+]
+
+# ============================================
+# PERGUNTAS PADRAO AUTOAVALIACAO
 # ============================================
 
 PERGUNTAS_PADRAO = {
     "texto": [
-        {"id": "pontos_fortes", "pergunta": "Quais são seus 3 pontos fortes na operação?", "hint": "O que você faz bem? No que se destaca?"},
-        {"id": "pontos_melhorar", "pergunta": "O que você sente que precisa melhorar?", "hint": "Seja honesto. Isso me ajuda a te apoiar."},
-        {"id": "acao_melhorar", "pergunta": "O que VOCÊ pode fazer pra melhorar nesses pontos?", "hint": "Pense em ações concretas que dependem de você."},
-        {"id": "equipe_melhorar", "pergunta": "O que a equipe/operação pode melhorar no geral?", "hint": "O que você enxerga que poderia ser diferente?"},
+        {"id": "pontos_fortes", "pergunta": "Quais sao seus 3 pontos fortes na operacao?", "hint": "O que voce faz bem? No que se destaca?"},
+        {"id": "pontos_melhorar", "pergunta": "O que voce sente que precisa melhorar?", "hint": "Seja honesto. Isso me ajuda a te apoiar."},
+        {"id": "acao_melhorar", "pergunta": "O que VOCE pode fazer pra melhorar nesses pontos?", "hint": "Pense em acoes concretas que dependem de voce."},
+        {"id": "equipe_melhorar", "pergunta": "O que a equipe/operacao pode melhorar no geral?", "hint": "O que voce enxerga que poderia ser diferente?"},
         {"id": "feedback_lider", "pergunta": "O que eu (Fernando) posso fazer pra te ajudar?", "hint": "Pode ser qualquer coisa: treinamento, posicionamento, feedback..."},
         {"id": "mensagem_time", "pergunta": "Mensagem pro time (opcional)", "hint": "Algo que queira compartilhar com todos..."},
     ],
     "escala": [
-        {"id": "comunicacao", "pergunta": "Comunicação com o time"},
-        {"id": "urgencia", "pergunta": "Senso de urgência"},
-        {"id": "qualidade", "pergunta": "Qualidade (atenção a erros)"},
+        {"id": "comunicacao", "pergunta": "Comunicacao com o time"},
+        {"id": "urgencia", "pergunta": "Senso de urgencia"},
+        {"id": "qualidade", "pergunta": "Qualidade (atencao a erros)"},
         {"id": "trabalho_equipe", "pergunta": "Trabalho em equipe"},
     ],
     "selecao": [
-        {"id": "posicao_aprender", "pergunta": "Posição que gostaria de aprender", "opcoes": [
+        {"id": "posicao_aprender", "pergunta": "Posicao que gostaria de aprender", "opcoes": [
             "Pick to Buffer", "Stow", "Receiver", "Unloader",
             "Yard Marshall", "Spider", "Carregamento", "Todas!",
-            "Estou bem na minha posição atual"
+            "Estou bem na minha posicao atual"
         ]}
     ]
 }
 
 
+# ============================================
+# FUNCOES AUXILIARES
+# ============================================
+
 def carregar_perguntas():
-    """Carrega perguntas do arquivo JSON ou usa padrão"""
     if os.path.exists(PERGUNTAS_FILE):
         with open(PERGUNTAS_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -72,26 +92,23 @@ def carregar_perguntas():
 
 
 def salvar_perguntas(perguntas):
-    """Salva perguntas editadas no JSON"""
     with open(PERGUNTAS_FILE, "w", encoding="utf-8") as f:
         json.dump(perguntas, f, ensure_ascii=False, indent=2)
 
 
-def salvar_resposta(dados):
-    """Salva resposta no CSV"""
+def salvar_resposta(dados, arquivo):
     df_novo = pd.DataFrame([dados])
-    if os.path.exists(RESPOSTAS_FILE):
-        df_existente = pd.read_csv(RESPOSTAS_FILE)
+    if os.path.exists(arquivo):
+        df_existente = pd.read_csv(arquivo)
         df_final = pd.concat([df_existente, df_novo], ignore_index=True)
     else:
         df_final = df_novo
-    df_final.to_csv(RESPOSTAS_FILE, index=False)
+    df_final.to_csv(arquivo, index=False)
 
 
-def carregar_respostas():
-    """Carrega todas as respostas"""
-    if os.path.exists(RESPOSTAS_FILE):
-        return pd.read_csv(RESPOSTAS_FILE)
+def carregar_respostas(arquivo):
+    if os.path.exists(arquivo):
+        return pd.read_csv(arquivo)
     return pd.DataFrame()
 
 
@@ -101,11 +118,11 @@ def carregar_respostas():
 
 def tela_login():
     st.markdown("## 🔐 Login — EUA8")
-    st.caption("Digite seu usuário e senha fornecidos pelo Fernando.")
+    st.caption("Digite seu usuario e senha fornecidos pelo Fernando.")
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        usuario = st.text_input("Usuário", placeholder="Ex: mayra").lower().strip()
+        usuario = st.text_input("Usuario", placeholder="Ex: mayra").lower().strip()
         senha = st.text_input("Senha", type="password", placeholder="Sua senha")
 
         if st.button("Entrar", use_container_width=True):
@@ -116,21 +133,18 @@ def tela_login():
                 st.session_state["role"] = USUARIOS[usuario]["role"]
                 st.rerun()
             else:
-                st.error("❌ Usuário ou senha incorretos.")
+                st.error("Usuario ou senha incorretos.")
 
 
 # ============================================
-# FORMULÁRIO DO ASSOCIADO
+# FORMULARIO 1: AUTOAVALIACAO
 # ============================================
 
-def tela_formulario():
+def form_autoavaliacao():
     perguntas = carregar_perguntas()
 
-    st.markdown("## 📋 Autoavaliação — EUA8")
-    st.markdown(f"**Olá, {st.session_state['nome']}!** 👋")
-    st.caption("Responda com sinceridade. Não existe resposta certa ou errada. Suas respostas são confidenciais.")
-
-    st.divider()
+    st.markdown("## 📋 Autoavaliacao")
+    st.caption("Responda com sinceridade. Suas respostas sao confidenciais.")
 
     with st.form("form_autoavaliacao"):
         respostas = {}
@@ -138,90 +152,165 @@ def tela_formulario():
         respostas["data"] = str(datetime.date.today())
         respostas["hora"] = datetime.datetime.now().strftime("%H:%M")
 
-        # Perguntas de texto
-        st.subheader("✍️ Suas Respostas")
         for p in perguntas["texto"]:
             respostas[p["id"]] = st.text_area(
                 p["pergunta"],
                 placeholder=p.get("hint", ""),
-                height=100
+                height=80
             )
 
         st.divider()
-
-        # Perguntas de seleção
-        st.subheader("🎯 Posição")
         for p in perguntas["selecao"]:
             respostas[p["id"]] = st.selectbox(p["pergunta"], p["opcoes"])
 
         st.divider()
-
-        # Perguntas de escala
-        st.subheader("⭐ Autoavaliação (1 a 5)")
+        st.subheader("Autoavaliacao (1 a 5)")
         for p in perguntas["escala"]:
             respostas[p["id"]] = st.slider(p["pergunta"], 1, 5, 3)
 
-        st.divider()
-
-        enviado = st.form_submit_button("✅ Enviar Respostas", use_container_width=True)
+        enviado = st.form_submit_button("Enviar Autoavaliacao", use_container_width=True)
 
         if enviado:
             if not respostas.get("pontos_fortes"):
-                st.error("Por favor, preencha pelo menos os pontos fortes.")
+                st.error("Preencha pelo menos os pontos fortes.")
             else:
-                salvar_resposta(respostas)
-                st.success("✅ Resposta enviada com sucesso! Obrigado! 🎉")
+                salvar_resposta(respostas, RESPOSTAS_FILE)
+                st.success("Resposta enviada com sucesso! 🎉")
                 st.balloons()
 
+
+# ============================================
+# FORMULARIO 2: NOTA POR ATIVIDADE
+# ============================================
+
+def form_notas_atividades():
+    st.markdown("## ⭐ Nota por Atividade")
+    st.caption("De uma nota de 1 a 5 para cada atividade e uma breve justificativa.")
+
+    with st.form("form_notas"):
+        respostas = {}
+        respostas["nome"] = st.session_state["nome"]
+        respostas["data"] = str(datetime.date.today())
+        respostas["hora"] = datetime.datetime.now().strftime("%H:%M")
+
+        for atividade in ATIVIDADES:
+            st.markdown(f"**{atividade}**")
+            col1, col2 = st.columns([1, 3])
+            with col1:
+                respostas[f"nota_{atividade}"] = st.selectbox(
+                    "Nota",
+                    [1, 2, 3, 4, 5],
+                    index=2,
+                    key=f"nota_{atividade}",
+                    label_visibility="collapsed"
+                )
+            with col2:
+                respostas[f"justificativa_{atividade}"] = st.text_input(
+                    "Por que?",
+                    placeholder="Breve justificativa...",
+                    key=f"just_{atividade}",
+                    label_visibility="collapsed"
+                )
+            st.divider()
+
+        enviado = st.form_submit_button("Enviar Notas", use_container_width=True)
+
+        if enviado:
+            salvar_resposta(respostas, NOTAS_FILE)
+            st.success("Notas enviadas com sucesso! 🎉")
+            st.balloons()
+
+
+# ============================================
+# TELA DO ASSOCIADO (MENU)
+# ============================================
+
+def tela_associado():
+    st.markdown(f"## 👋 Ola, {st.session_state['nome']}!")
+    st.caption("Escolha o formulario que deseja preencher:")
+
+    opcao = st.radio(
+        "Formularios disponiveis:",
+        ["📋 Autoavaliacao", "⭐ Nota por Atividade"],
+        label_visibility="collapsed"
+    )
+
     st.divider()
-    if st.button("🚪 Sair"):
+
+    if opcao == "📋 Autoavaliacao":
+        form_autoavaliacao()
+    elif opcao == "⭐ Nota por Atividade":
+        form_notas_atividades()
+
+    st.divider()
+    if st.button("Sair"):
         st.session_state.clear()
         st.rerun()
 
 
 # ============================================
-# PAINEL ADMIN (Fernando)
+# PAINEL ADMIN
 # ============================================
 
 def tela_admin():
     st.markdown("## 🎯 Painel Admin — EUA8")
     st.markdown(f"**Bem-vindo, {st.session_state['nome']}!**")
 
-    tab1, tab2, tab3 = st.tabs(["📊 Respostas", "✏️ Editar Perguntas", "👥 Usuários"])
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "📋 Autoavaliacao",
+        "⭐ Notas Atividades",
+        "✏️ Editar Perguntas",
+        "👥 Usuarios"
+    ])
 
-    # --- ABA 1: VER RESPOSTAS ---
+    # --- ABA 1: RESPOSTAS AUTOAVALIACAO ---
     with tab1:
-        df = carregar_respostas()
+        df = carregar_respostas(RESPOSTAS_FILE)
         if df.empty:
-            st.info("Nenhuma resposta ainda. Aguardando o time preencher! 📝")
+            st.info("Nenhuma resposta de autoavaliacao ainda.")
         else:
             st.metric("Total de Respostas", len(df))
-
-            # Filtro por nome
             nomes = ["Todos"] + sorted(df["nome"].unique().tolist())
-            filtro = st.selectbox("Filtrar por nome:", nomes)
-
+            filtro = st.selectbox("Filtrar por nome:", nomes, key="filtro_auto")
             if filtro != "Todos":
                 df = df[df["nome"] == filtro]
-
             st.dataframe(df, use_container_width=True)
-
-            # Botão de exportar
             csv = df.to_csv(index=False).encode("utf-8")
             st.download_button(
-                "📥 Exportar para Excel/CSV",
+                "📥 Exportar Autoavaliacao (CSV)",
                 csv,
-                f"autoavaliacao_eua8_{datetime.date.today()}.csv",
+                f"autoavaliacao_{datetime.date.today()}.csv",
                 "text/csv",
                 use_container_width=True
             )
 
-    # --- ABA 2: EDITAR PERGUNTAS ---
+    # --- ABA 2: NOTAS POR ATIVIDADE ---
     with tab2:
-        st.caption("Edite as perguntas que aparecem pro time. Clique em Salvar quando terminar.")
+        df2 = carregar_respostas(NOTAS_FILE)
+        if df2.empty:
+            st.info("Nenhuma nota de atividade ainda.")
+        else:
+            st.metric("Total de Respostas", len(df2))
+            nomes2 = ["Todos"] + sorted(df2["nome"].unique().tolist())
+            filtro2 = st.selectbox("Filtrar por nome:", nomes2, key="filtro_notas")
+            if filtro2 != "Todos":
+                df2 = df2[df2["nome"] == filtro2]
+            st.dataframe(df2, use_container_width=True)
+            csv2 = df2.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                "📥 Exportar Notas (CSV)",
+                csv2,
+                f"notas_atividades_{datetime.date.today()}.csv",
+                "text/csv",
+                use_container_width=True
+            )
+
+    # --- ABA 3: EDITAR PERGUNTAS ---
+    with tab3:
+        st.caption("Edite as perguntas da autoavaliacao.")
         perguntas = carregar_perguntas()
 
-        st.subheader("📝 Perguntas de Texto")
+        st.subheader("Perguntas de Texto")
         novas_texto = []
         for i, p in enumerate(perguntas["texto"]):
             with st.expander(f"Pergunta {i+1}: {p['pergunta'][:50]}..."):
@@ -229,34 +318,34 @@ def tela_admin():
                 novo_hint = st.text_input(f"Dica {i+1}", value=p.get("hint", ""), key=f"ph_{i}")
                 novas_texto.append({"id": p["id"], "pergunta": nova_pergunta, "hint": novo_hint})
 
-        st.subheader("⭐ Perguntas de Escala (1-5)")
+        st.subheader("Perguntas de Escala (1-5)")
         novas_escala = []
         for i, p in enumerate(perguntas["escala"]):
             nova = st.text_input(f"Escala {i+1}", value=p["pergunta"], key=f"pe_{i}")
             novas_escala.append({"id": p["id"], "pergunta": nova})
 
-        if st.button("💾 Salvar Perguntas", use_container_width=True):
+        if st.button("Salvar Perguntas", use_container_width=True):
             perguntas["texto"] = novas_texto
             perguntas["escala"] = novas_escala
             salvar_perguntas(perguntas)
-            st.success("✅ Perguntas atualizadas!")
+            st.success("Perguntas atualizadas!")
 
-    # --- ABA 3: VER USUÁRIOS ---
-    with tab3:
-        st.caption("Usuários cadastrados no sistema:")
+    # --- ABA 4: USUARIOS ---
+    with tab4:
+        st.caption("Usuarios cadastrados:")
         dados_users = []
         for user, info in USUARIOS.items():
             dados_users.append({
-                "Usuário": user,
+                "Usuario": user,
                 "Nome": info["nome"],
                 "Senha": info["senha"],
                 "Tipo": info["role"]
             })
         st.dataframe(pd.DataFrame(dados_users), use_container_width=True)
-        st.info("💡 Para adicionar/remover usuários, edite o dicionário USUARIOS no código.")
+        st.info("Para adicionar usuarios, edite o dicionario USUARIOS no codigo.")
 
     st.divider()
-    if st.button("🚪 Sair"):
+    if st.button("Sair"):
         st.session_state.clear()
         st.rerun()
 
@@ -271,7 +360,7 @@ def main():
     elif st.session_state["role"] == "admin":
         tela_admin()
     else:
-        tela_formulario()
+        tela_associado()
 
 
 if __name__ == "__main__":
