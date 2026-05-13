@@ -14,23 +14,8 @@ st.set_page_config(
     layout="centered"
 )
 
-# CSS CUSTOMIZADO - CORES AMAZON
 st.markdown("""
-    /* Inputs visiveis */
-    input, textarea, select {
-        background-color: #FFFFFF !important;
-        color: #232F3E !important;
-    }
-    input::placeholder, textarea::placeholder {
-        color: #999999 !important;
-    }
-
 <style>
-    /* Header */
-    .stApp header {
-        background-color: #232F3E;
-    }
-
     /* Botoes */
     .stButton > button {
         background-color: #FF9900;
@@ -44,43 +29,22 @@ st.markdown("""
         color: #232F3E;
     }
 
-    /* Form submit */
     .stFormSubmitButton > button {
         background-color: #FF9900;
         color: #232F3E;
         font-weight: bold;
         border: none;
         border-radius: 8px;
-        padding: 0.5rem 1rem;
     }
 
-    /* Titulos */
     h1, h2, h3 {
         color: #232F3E;
     }
 
-    /* Sidebar */
-    section[data-testid="stSidebar"] {
-        background-color: #232F3E;
-    }
-    section[data-testid="stSidebar"] * {
-        color: #FFFFFF;
-    }
-
-    /* Tabs */
-    .stTabs [data-baseweb="tab"] {
-        color: #232F3E;
-    }
-    .stTabs [aria-selected="true"] {
-        border-bottom-color: #FF9900;
-    }
-
-    /* Divider */
     hr {
         border-color: #FF9900;
     }
 
-    /* Logo header customizado */
     .amazon-header {
         background-color: #232F3E;
         padding: 1rem;
@@ -97,17 +61,13 @@ st.markdown("""
         margin: 0;
     }
 
-    /* Cards */
-    .metric-card {
-        background-color: #232F3E;
-        padding: 1rem;
-        border-radius: 10px;
-        text-align: center;
-        color: #FFFFFF;
+    /* Inputs visiveis */
+    input, textarea, select {
+        background-color: #FFFFFF !important;
+        color: #232F3E !important;
     }
-    .metric-card h2 {
-        color: #FF9900;
-        margin: 0;
+    input::placeholder, textarea::placeholder {
+        color: #999999 !important;
     }
 </style>
 """, unsafe_allow_html=True)
