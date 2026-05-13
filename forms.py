@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import datetime
@@ -9,7 +8,100 @@ import json
 # CONFIGURACAO INICIAL
 # ============================================
 
-st.set_page_config(page_title="EUA8 - Formularios", page_icon="📋", layout="centered")
+st.set_page_config(
+    page_title="EUA8 - Formularios",
+    page_icon="📦",
+    layout="centered"
+)
+
+# CSS CUSTOMIZADO - CORES AMAZON
+st.markdown("""
+<style>
+    /* Header */
+    .stApp header {
+        background-color: #232F3E;
+    }
+
+    /* Botoes */
+    .stButton > button {
+        background-color: #FF9900;
+        color: #232F3E;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+    }
+    .stButton > button:hover {
+        background-color: #E88B00;
+        color: #232F3E;
+    }
+
+    /* Form submit */
+    .stFormSubmitButton > button {
+        background-color: #FF9900;
+        color: #232F3E;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Titulos */
+    h1, h2, h3 {
+        color: #232F3E;
+    }
+
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #232F3E;
+    }
+    section[data-testid="stSidebar"] * {
+        color: #FFFFFF;
+    }
+
+    /* Tabs */
+    .stTabs [data-baseweb="tab"] {
+        color: #232F3E;
+    }
+    .stTabs [aria-selected="true"] {
+        border-bottom-color: #FF9900;
+    }
+
+    /* Divider */
+    hr {
+        border-color: #FF9900;
+    }
+
+    /* Logo header customizado */
+    .amazon-header {
+        background-color: #232F3E;
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .amazon-header h1 {
+        color: #FF9900;
+        margin: 0;
+    }
+    .amazon-header p {
+        color: #FFFFFF;
+        margin: 0;
+    }
+
+    /* Cards */
+    .metric-card {
+        background-color: #232F3E;
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+        color: #FFFFFF;
+    }
+    .metric-card h2 {
+        color: #FF9900;
+        margin: 0;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
@@ -23,15 +115,15 @@ NOTAS_FILE = os.path.join(DATA_DIR, "notas_atividades.csv")
 # ============================================
 
 USUARIOS = {
-    "fernando": {"senha"[PASSWORD]026", "nome": "Fernando Junior", "role": "admin"},
-    "mayra": {"senha"[PASSWORD]yra", "nome": "Mayra", "role": "associado"},
-    "carol": {"senha"[PASSWORD]rol", "nome": "Carol", "role": "associado"},
-    "amanda": {"senha"[PASSWORD]nda", "nome": "Amanda", "role": "associado"},
-    "helen": {"senha"[PASSWORD]len", "nome": "Helen", "role": "associado"},
-    "nicole": {"senha"[PASSWORD]ole", "nome": "Nicole", "role": "associado"},
-    "fernanda": {"senha"[PASSWORD]nda", "nome": "Fernanda", "role": "associado"},
-    "byanca": {"senha"[PASSWORD]nca", "nome": "Byanca", "role": "associado"},
-    "kalebe": {"senha"[PASSWORD]ebe", "nome": "Kalebe", "role": "associado"},
+    "fernando": {"senha[PASSWORD]2026", "nome": "Fernando Junior", "role[PASSWORD]"},
+    "mayra": {"senha[PASSWORD]ayra", "nome": "Mayra", "role": "associado"},
+    "carol": {"senha[PASSWORD]arol", "nome": "Carol", "role": "associado"},
+    "amanda": {"senha[PASSWORD]anda", "nome": "Amanda", "role": "associado"},
+    "helen": {"senha[PASSWORD]elen", "nome": "Helen", "role": "associado"},
+    "nicole": {"senha[PASSWORD]cole", "nome": "Nicole", "role": "associado"},
+    "fernanda": {"senha[PASSWORD]anda", "nome": "Fernanda", "role": "associado"},
+    "byanca": {"senha[PASSWORD]anca", "nome": "Byanca", "role": "associado"},
+    "kalebe": {"senha[PASSWORD]lebe", "nome": "Kalebe", "role": "associado"},
 }
 
 # ============================================
@@ -52,7 +144,7 @@ ATIVIDADES = [
 ]
 
 # ============================================
-# PERGUNTAS PADRAO AUTOAVALIACAO
+# PERGUNTAS PADRAO
 # ============================================
 
 PERGUNTAS_PADRAO = {
@@ -79,10 +171,6 @@ PERGUNTAS_PADRAO = {
     ]
 }
 
-
-# ============================================
-# FUNCOES AUXILIARES
-# ============================================
 
 def carregar_perguntas():
     if os.path.exists(PERGUNTAS_FILE):
@@ -117,7 +205,14 @@ def carregar_respostas(arquivo):
 # ============================================
 
 def tela_login():
-    st.markdown("## 🔐 Login — EUA8")
+    st.markdown("""
+    <div class="amazon-header">
+        <h1>📦 EUA8</h1>
+        <p>First Mile Operations</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("### 🔐 Login")
     st.caption("Digite seu usuario e senha fornecidos pelo Fernando.")
 
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -143,7 +238,7 @@ def tela_login():
 def form_autoavaliacao():
     perguntas = carregar_perguntas()
 
-    st.markdown("## 📋 Autoavaliacao")
+    st.markdown("### 📋 Autoavaliacao")
     st.caption("Responda com sinceridade. Suas respostas sao confidenciais.")
 
     with st.form("form_autoavaliacao"):
@@ -164,7 +259,7 @@ def form_autoavaliacao():
             respostas[p["id"]] = st.selectbox(p["pergunta"], p["opcoes"])
 
         st.divider()
-        st.subheader("Autoavaliacao (1 a 5)")
+        st.markdown("**Autoavaliacao (1 a 5)**")
         for p in perguntas["escala"]:
             respostas[p["id"]] = st.slider(p["pergunta"], 1, 5, 3)
 
@@ -184,7 +279,7 @@ def form_autoavaliacao():
 # ============================================
 
 def form_notas_atividades():
-    st.markdown("## ⭐ Nota por Atividade")
+    st.markdown("### ⭐ Nota por Atividade")
     st.caption("De uma nota de 1 a 5 para cada atividade e uma breve justificativa.")
 
     with st.form("form_notas"):
@@ -222,17 +317,25 @@ def form_notas_atividades():
 
 
 # ============================================
-# TELA DO ASSOCIADO (MENU)
+# TELA DO ASSOCIADO
 # ============================================
 
 def tela_associado():
-    st.markdown(f"## 👋 Ola, {st.session_state['nome']}!")
-    st.caption("Escolha o formulario que deseja preencher:")
+    st.markdown("""
+    <div class="amazon-header">
+        <h1>📦 EUA8</h1>
+        <p>First Mile Operations</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"### 👋 Ola, {st.session_state['nome']}!")
+    st.caption("Escolha o formulario:")
 
     opcao = st.radio(
-        "Formularios disponiveis:",
+        "Formularios:",
         ["📋 Autoavaliacao", "⭐ Nota por Atividade"],
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        horizontal=True
     )
 
     st.divider()
@@ -243,7 +346,7 @@ def tela_associado():
         form_notas_atividades()
 
     st.divider()
-    if st.button("Sair"):
+    if st.button("🚪 Sair"):
         st.session_state.clear()
         st.rerun()
 
@@ -253,17 +356,22 @@ def tela_associado():
 # ============================================
 
 def tela_admin():
-    st.markdown("## 🎯 Painel Admin — EUA8")
+    st.markdown("""
+    <div class="amazon-header">
+        <h1>📦 EUA8 - Admin</h1>
+        <p>Painel de Gestao</p>
+    </div>
+    """, unsafe_allow_html=True)
+
     st.markdown(f"**Bem-vindo, {st.session_state['nome']}!**")
 
     tab1, tab2, tab3, tab4 = st.tabs([
         "📋 Autoavaliacao",
-        "⭐ Notas Atividades",
+        "⭐ Notas",
         "✏️ Editar Perguntas",
         "👥 Usuarios"
     ])
 
-    # --- ABA 1: RESPOSTAS AUTOAVALIACAO ---
     with tab1:
         df = carregar_respostas(RESPOSTAS_FILE)
         if df.empty:
@@ -277,18 +385,17 @@ def tela_admin():
             st.dataframe(df, use_container_width=True)
             csv = df.to_csv(index=False).encode("utf-8")
             st.download_button(
-                "📥 Exportar Autoavaliacao (CSV)",
+                "📥 Exportar CSV",
                 csv,
                 f"autoavaliacao_{datetime.date.today()}.csv",
                 "text/csv",
                 use_container_width=True
             )
 
-    # --- ABA 2: NOTAS POR ATIVIDADE ---
     with tab2:
         df2 = carregar_respostas(NOTAS_FILE)
         if df2.empty:
-            st.info("Nenhuma nota de atividade ainda.")
+            st.info("Nenhuma nota ainda.")
         else:
             st.metric("Total de Respostas", len(df2))
             nomes2 = ["Todos"] + sorted(df2["nome"].unique().tolist())
@@ -298,19 +405,18 @@ def tela_admin():
             st.dataframe(df2, use_container_width=True)
             csv2 = df2.to_csv(index=False).encode("utf-8")
             st.download_button(
-                "📥 Exportar Notas (CSV)",
+                "📥 Exportar CSV",
                 csv2,
-                f"notas_atividades_{datetime.date.today()}.csv",
+                f"notas_{datetime.date.today()}.csv",
                 "text/csv",
                 use_container_width=True
             )
 
-    # --- ABA 3: EDITAR PERGUNTAS ---
     with tab3:
         st.caption("Edite as perguntas da autoavaliacao.")
         perguntas = carregar_perguntas()
 
-        st.subheader("Perguntas de Texto")
+        st.markdown("**Perguntas de Texto**")
         novas_texto = []
         for i, p in enumerate(perguntas["texto"]):
             with st.expander(f"Pergunta {i+1}: {p['pergunta'][:50]}..."):
@@ -318,7 +424,7 @@ def tela_admin():
                 novo_hint = st.text_input(f"Dica {i+1}", value=p.get("hint", ""), key=f"ph_{i}")
                 novas_texto.append({"id": p["id"], "pergunta": nova_pergunta, "hint": novo_hint})
 
-        st.subheader("Perguntas de Escala (1-5)")
+        st.markdown("**Perguntas de Escala (1-5)**")
         novas_escala = []
         for i, p in enumerate(perguntas["escala"]):
             nova = st.text_input(f"Escala {i+1}", value=p["pergunta"], key=f"pe_{i}")
@@ -330,7 +436,6 @@ def tela_admin():
             salvar_perguntas(perguntas)
             st.success("Perguntas atualizadas!")
 
-    # --- ABA 4: USUARIOS ---
     with tab4:
         st.caption("Usuarios cadastrados:")
         dados_users = []
@@ -342,10 +447,9 @@ def tela_admin():
                 "Tipo": info["role"]
             })
         st.dataframe(pd.DataFrame(dados_users), use_container_width=True)
-        st.info("Para adicionar usuarios, edite o dicionario USUARIOS no codigo.")
 
     st.divider()
-    if st.button("Sair"):
+    if st.button("🚪 Sair"):
         st.session_state.clear()
         st.rerun()
 
@@ -365,4 +469,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
