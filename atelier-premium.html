@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+<title>Laurinha Kids — Ateliê Premium</title>
+<style>
+  :root{
+    --pink:#ff5ca8; --pink2:#ff9bc8; --lav:#d8c3ff; --purple:#7d4dff; --blue:#9fe7ff; --yellow:#ffd95e; --text:#6b3377;
+    --card:rgba(255,255,255,.94); --shadow:0 12px 30px rgba(91,40,100,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(180deg,#a9e8ff,#ffd7ef);font-family:Arial,Helvetica,sans-serif;touch-action:none}
+  #app{position:relative;width:100%;height:100%;max-width:520px;margin:0 auto;overflow:hidden;background:linear-gradient(180deg,#a5e6ff 0%,#f5d1f0 58%,#ffe7c8 100%)}
+  .cloud{position:absolute;background:#fff;border-radius:999px;opacity:.95}.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:999px}
+  .cloud.a{left:18px;top:72px;width:82px;height:30px}.cloud.a:before{left:9px;top:-12px;width:30px;height:30px}.cloud.a:after{right:11px;top:-16px;width:36px;height:36px}
+  .cloud.b{right:18px;top:90px;width:92px;height:30px}.cloud.b:before{left:10px;top:-13px;width:30px;height:30px}.cloud.b:after{right:12px;top:-16px;width:36px;height:36px}
+  .header{position:absolute;left:14px;right:14px;top:12px;background:var(--card);border-radius:22px;padding:10px 14px;box-shadow:var(--shadow);z-index:5;text-align:center}
+  .header h1{margin:0;font-size:29px;line-height:1;color:#ff45a0;font-weight:900;text-shadow:0 2px 0 #fff}
+  .header .sub{margin-top:4px;font-size:14px;font-weight:800;color:var(--text)}
+  #speech{position:absolute;left:18px;right:18px;top:98px;min-height:58px;padding:10px 18px;background:#fffefc;border:4px solid #fff;border-radius:24px;box-shadow:var(--shadow);z-index:5;color:var(--text);font-size:19px;font-weight:900;text-align:center;display:flex;align-items:center;justify-content:center}
+  #stage{position:absolute;left:0;right:0;top:160px;bottom:196px;overflow:hidden}
+  #runway{position:absolute;left:12px;right:12px;bottom:12px;height:84px;border-radius:24px;background:linear-gradient(180deg,#ffeef8,#ffd8ee);box-shadow:inset 0 8px 0 rgba(255,255,255,.7), inset 0 -6px 0 rgba(255,133,186,.25)}
+  #runway:before{content:"";position:absolute;left:14px;right:14px;top:50%;height:8px;transform:translateY(-50%);background:repeating-linear-gradient(90deg,#fff 0 18px,transparent 18px 38px);opacity:.55}
+  .sparkleLayer{position:absolute;inset:0;pointer-events:none;background:
+    radial-gradient(circle at 15% 24%,rgba(255,255,255,.95) 0 2px,transparent 3px),
+    radial-gradient(circle at 72% 20%,rgba(255,255,255,.95) 0 2px,transparent 3px),
+    radial-gradient(circle at 84% 40%,rgba(255,255,255,.95) 0 2px,transparent 3px),
+    radial-gradient(circle at 20% 65%,rgba(255,255,255,.95) 0 2px,transparent 3px),
+    radial-gradient(circle at 68% 66%,rgba(255,255,255,.95) 0 2px,transparent 3px);
+    opacity:.65}
+  #charWrap{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;transition:transform .25s ease}
+  .shadow{position:absolute;bottom:68px;width:180px;height:24px;border-radius:50%;background:rgba(105,74,128,.18)}
+  #char{position:relative;width:220px;height:376px;transform-origin:50% 86%}
+  #char.alive{animation:bounce 1s infinite ease-in-out}
+  #char.walking{animation:walkBounce .55s infinite ease-in-out}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes walkBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .hairBack{position:absolute;left:41px;top:0;width:138px;height:195px;background:linear-gradient(180deg,#7d4a2b,#8f5734 40%,#724223);border-radius:70px 70px 58px 58px;z-index:1}
+  .head{position:absolute;left:56px;top:12px;width:108px;height:116px;background:#ffd7c4;border-radius:50%;z-index:4;box-shadow:inset 0 -7px 0 rgba(255,255,255,.18)}
+  .hairFront{position:absolute;left:48px;top:-4px;width:126px;height:74px;background:linear-gradient(180deg,#8b5433,#6e3c20);border-radius:66px 66px 34px 34px;z-index:6}
+  .bang{position:absolute;top:45px;width:16px;background:#6d3a21;border-radius:0 0 18px 18px;z-index:7}.b1{left:80px;height:28px;transform:rotate(9deg)}.b2{left:103px;height:34px}.b3{left:126px;height:26px;transform:rotate(-9deg)}
+  .eye{position:absolute;top:62px;width:13px;height:18px;background:#312643;border-radius:50%;z-index:8}.eye.l{left:85px}.eye.r{left:128px}
+  #char.alive .eye,#char.walking .eye{animation:blink 4s infinite}.lash{position:absolute;top:57px;width:18px;height:8px;border-top:3px solid #563255;border-radius:50%;z-index:8}.lash.l{left:82px}.lash.r{left:126px}
+  @keyframes blink{0%,44%,46%,100%{transform:scaleY(1)}45%{transform:scaleY(.1)}}
+  .blush{position:absolute;top:84px;width:20px;height:10px;background:#ffb4c9;border-radius:999px;z-index:8;opacity:.8}.blush.l{left:70px}.blush.r{left:138px}
+  #mouth{position:absolute;left:105px;top:93px;width:18px;height:10px;border-bottom:4px solid #b24a79;border-radius:0 0 20px 20px;z-index:8}
+  #char.alive #mouth,#char.talking #mouth,#char.walking #mouth{animation:talk .26s infinite alternate}@keyframes talk{from{height:9px}to{height:16px}}
+  .neck{position:absolute;left:99px;top:115px;width:22px;height:18px;background:#ffd7c4;border-radius:10px;z-index:3}
+  .torso{position:absolute;left:80px;top:128px;width:60px;height:46px;background:#ffd7c4;border-radius:18px;z-index:2}
+  .arm{position:absolute;top:146px;width:25px;height:112px;background:#ffd0b8;border-radius:18px;z-index:2;transform-origin:top center}.arm.l{left:56px;transform:rotate(10deg)}.arm.r{left:142px;transform:rotate(-10deg)}
+  .arm .hand{position:absolute;left:2px;bottom:-8px;width:22px;height:22px;background:#ffd0b8;border-radius:50%}
+  #char.alive .arm.l{animation:waveL 1s infinite ease-in-out}#char.alive .arm.r{animation:waveR 1s infinite ease-in-out}
+  #char.walking .arm.l{animation:walkArmL .5s infinite linear}#char.walking .arm.r{animation:walkArmR .5s infinite linear}
+  @keyframes waveL{0%,100%{transform:rotate(10deg)}50%{transform:rotate(22deg)}}@keyframes waveR{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(-22deg)}}
+  @keyframes walkArmL{0%{transform:rotate(20deg)}50%{transform:rotate(-6deg)}100%{transform:rotate(20deg)}}@keyframes walkArmR{0%{transform:rotate(-20deg)}50%{transform:rotate(6deg)}100%{transform:rotate(-20deg)}}
+  .dressShell{position:absolute;left:48px;top:145px;width:124px;height:170px;clip-path:polygon(22% 0%,78% 0%,100% 100%,0% 100%);border-radius:18px;overflow:hidden;box-shadow:0 8px 16px rgba(120,88,155,.14);z-index:3;border:8px solid #fff;background:#fff4fa}
+  #dressBase,#paintLayer{position:absolute;inset:0;width:100%;height:100%}#paintLayer{z-index:4;touch-action:none}
+  .belt{position:absolute;left:58px;top:184px;width:106px;height:10px;background:#fff;border-radius:999px;z-index:5}
+  #decorLayer{position:absolute;left:48px;top:145px;width:124px;height:170px;z-index:6;clip-path:polygon(22% 0%,78% 0%,100% 100%,0% 100%);pointer-events:none}
+  .decor{position:absolute;transform:translate(-50%,-50%);font-size:24px}
+  .leg{position:absolute;top:280px;width:26px;height:74px;background:#ffd0b8;border-radius:16px;z-index:1;transform-origin:top center}.leg.l{left:87px}.leg.r{left:117px}
+  #char.walking .leg.l{animation:walkLegL .5s infinite linear}#char.walking .leg.r{animation:walkLegR .5s infinite linear}
+  @keyframes walkLegL{0%{transform:rotate(-16deg)}50%{transform:rotate(14deg)}100%{transform:rotate(-16deg)}}@keyframes walkLegR{0%{transform:rotate(16deg)}50%{transform:rotate(-14deg)}100%{transform:rotate(16deg)}}
+  .shoe{position:absolute;top:340px;width:42px;height:22px;background:#ff83be;border-radius:18px 18px 14px 14px;z-index:2;box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}.shoe.l{left:74px}.shoe.r{left:112px}
+  .tiara{position:absolute;left:80px;top:-9px;width:60px;height:34px;z-index:9}.tiara.none{display:none}.tiara.bow:before,.tiara.bow:after,.tiara.bow span{content:"";position:absolute}.tiara.bow:before{left:0;top:8px;width:22px;height:18px;background:#ff5fa8;border-radius:5px 14px 10px 14px;transform:rotate(12deg)}.tiara.bow:after{right:0;top:8px;width:22px;height:18px;background:#ff5fa8;border-radius:14px 5px 14px 10px;transform:rotate(-12deg)}.tiara.bow span{left:22px;top:8px;width:16px;height:16px;background:#ff99c7;border-radius:50%}
+  .tiara.crown:before{content:"👑";position:absolute;inset:0;font-size:34px;text-align:center}.tiara.unicorn:before{content:"🦄";position:absolute;inset:0;font-size:30px;text-align:center}.tiara.flowers:before{content:"🌸🌼";position:absolute;inset:0;font-size:24px;text-align:center}
+  #glasses{position:absolute;left:74px;top:57px;width:72px;height:26px;z-index:9;display:none}.gLens{position:absolute;top:0;width:26px;height:22px;border:3px solid #954d5d;border-radius:50%;background:rgba(255,255,255,.25)}#glasses .left{left:0}#glasses .right{right:0}#glasses .bridge{position:absolute;left:27px;top:8px;width:18px;height:3px;background:#954d5d}
+  #necklace{position:absolute;left:87px;top:133px;width:50px;height:28px;border-bottom:4px solid #ffd65a;border-radius:0 0 50px 50px;z-index:7;display:none}#necklace:after{content:"💎";position:absolute;left:16px;top:10px;font-size:16px}
+  #bag{position:absolute;left:156px;top:222px;width:34px;height:42px;background:#ffd161;border-radius:10px;z-index:5;display:none;box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}#bag:before{content:"";position:absolute;left:6px;top:-9px;width:20px;height:16px;border:4px solid #e8ad2f;border-bottom:none;border-radius:14px 14px 0 0}
+  .controls{position:absolute;left:10px;right:10px;bottom:8px;height:184px;padding:10px;background:rgba(255,255,255,.95);border-radius:28px;box-shadow:var(--shadow);z-index:6}
+  .tabs{display:flex;gap:8px;margin-bottom:8px}.tab{flex:1;height:34px;border:none;border-radius:16px;background:#f4e9ff;color:var(--text);font-weight:900}.tab.active{background:linear-gradient(180deg,#ff87c1,#ff5aa9);color:#fff}
+  .panel{display:none;height:92px;gap:8px;align-items:center;overflow-x:auto;padding-bottom:4px}.panel.active{display:flex}
+  .btnColor{width:42px;height:42px;border-radius:50%;border:4px solid #fff;flex:0 0 auto;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+  .mini,.option,.primary{border:none;border-radius:18px;font-weight:900;flex:0 0 auto}.mini{height:42px;padding:0 12px;background:#efe4ff;color:var(--text)}.option{min-width:84px;height:64px;padding:6px;background:#f8f0ff;color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center}.option .em{font-size:26px}.option.selected{outline:4px solid #ff6fb6;background:#fff5fb}
+  .actionRow{display:flex;gap:8px;margin-top:8px}.primary{flex:1;height:46px;color:#fff;font-size:18px;background:linear-gradient(180deg,#8a54ff,#6c3ff3)}.primary.life{background:linear-gradient(180deg,#ff7fbe,#ff4ea0)}.primary.walk{background:linear-gradient(180deg,#4dbfff,#2978ff)}.primary.clean{background:linear-gradient(180deg,#ffd773,#ffb43c);color:#7a4a0f}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="cloud a"></div><div class="cloud b"></div>
+  <div class="header"><h1>Laurinha Kids</h1><div class="sub">Ateliê Encantado Premium • Vista, pinte e dê vida à Laurinha</div></div>
+  <div id="speech">Pinte minha roupa, coloque acessórios e depois me faça desfilar! 💕</div>
+  <div id="stage">
+    <div class="sparkleLayer"></div>
+    <div id="charWrap">
+      <div class="shadow"></div>
+      <div id="char">
+        <div class="hairBack"></div>
+        <div class="head"></div>
+        <div class="hairFront"></div>
+        <div class="bang b1"></div><div class="bang b2"></div><div class="bang b3"></div>
+        <div class="eye l"></div><div class="eye r"></div><div class="lash l"></div><div class="lash r"></div><div class="blush l"></div><div class="blush r"></div><div id="mouth"></div>
+        <div id="glasses"><div class="gLens left"></div><div class="bridge"></div><div class="gLens right"></div></div>
+        <div class="neck"></div><div class="torso"></div><div id="necklace"></div>
+        <div class="arm l"><div class="hand"></div></div><div class="arm r"><div class="hand"></div></div>
+        <div class="dressShell"><canvas id="dressBase" width="248" height="340"></canvas><canvas id="paintLayer" width="248" height="340"></canvas></div>
+        <div class="belt"></div><div id="decorLayer"></div><div id="bag"></div>
+        <div class="leg l"></div><div class="leg r"></div><div class="shoe l" id="shoeL"></div><div class="shoe r" id="shoeR"></div>
+        <div class="tiara bow" id="tiara"><span></span></div>
+      </div>
+    </div>
+    <div id="runway"></div>
+  </div>
+  <div class="controls">
+    <div class="tabs">
+      <button class="tab active" data-panel="paint">Pintar</button>
+      <button class="tab" data-panel="enfeites">Enfeites</button>
+      <button class="tab" data-panel="acessorios">Acessórios</button>
+      <button class="tab" data-panel="tiaras">Tiaras</button>
+    </div>
+    <div class="panel active" id="panel-paint">
+      <button class="btnColor" style="background:#ff5fa8" data-color="#ff5fa8"></button>
+      <button class="btnColor" style="background:#ffb347" data-color="#ffb347"></button>
+      <button class="btnColor" style="background:#ffef6c" data-color="#ffef6c"></button>
+      <button class="btnColor" style="background:#75dd7a" data-color="#75dd7a"></button>
+      <button class="btnColor" style="background:#57bfff" data-color="#57bfff"></button>
+      <button class="btnColor" style="background:#9b6bff" data-color="#9b6bff"></button>
+      <button class="mini" id="brushS">Pincel fino</button>
+      <button class="mini" id="brushB">Pincel grosso</button>
+    </div>
+    <div class="panel" id="panel-enfeites">
+      <button class="option decorPick selected" data-decor="💖"><span class="em">💖</span>Coração</button>
+      <button class="option decorPick" data-decor="⭐"><span class="em">⭐</span>Estrela</button>
+      <button class="option decorPick" data-decor="🌈"><span class="em">🌈</span>Arco-íris</button>
+      <button class="option decorPick" data-decor="🦋"><span class="em">🦋</span>Borboleta</button>
+      <button class="option decorPick" data-decor="🌸"><span class="em">🌸</span>Flor</button>
+    </div>
+    <div class="panel" id="panel-acessorios">
+      <button class="option accPick" data-acc="glasses"><span class="em">👓</span>Óculos</button>
+      <button class="option accPick" data-acc="necklace"><span class="em">📿</span>Colar</button>
+      <button class="option accPick" data-acc="bag"><span class="em">👜</span>Bolsa</button>
+      <button class="option shoePick selected" data-shoe="#ff83be"><span class="em">👠</span>Rosa</button>
+      <button class="option shoePick" data-shoe="#7d4dff"><span class="em">👠</span>Lilás</button>
+      <button class="option shoePick" data-shoe="#4dbfff"><span class="em">👠</span>Azul</button>
+    </div>
+    <div class="panel" id="panel-tiaras">
+      <button class="option tiaraPick selected" data-tiara="bow"><span class="em">🎀</span>Laço</button>
+      <button class="option tiaraPick" data-tiara="crown"><span class="em">👑</span>Coroa</button>
+      <button class="option tiaraPick" data-tiara="unicorn"><span class="em">🦄</span>Mágica</button>
+      <button class="option tiaraPick" data-tiara="flowers"><span class="em">🌼</span>Flores</button>
+      <button class="option tiaraPick" data-tiara="none"><span class="em">🚫</span>Nenhuma</button>
+    </div>
+    <div class="actionRow">
+      <button class="primary clean" id="btnReset">Limpar</button>
+      <button class="primary life" id="btnLife">Dar vida ✨</button>
+      <button class="primary walk" id="btnWalk">Desfilar</button>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const speech = document.getElementById('speech');
+  const char = document.getElementById('char');
+  const wrap = document.getElementById('charWrap');
+  const paint = document.getElementById('paintLayer');
+  const pctx = paint.getContext('2d');
+  const base = document.getElementById('dressBase');
+  const bctx = base.getContext('2d');
+  const decorLayer = document.getElementById('decorLayer');
+  const tiara = document.getElementById('tiara');
+  const glasses = document.getElementById('glasses');
+  const necklace = document.getElementById('necklace');
+  const bag = document.getElementById('bag');
+  const shoeL = document.getElementById('shoeL');
+  const shoeR = document.getElementById('shoeR');
+  let drawColor = '#ff5fa8', brush=16, drawing=false, currentDecor='💖', tiaraType='bow';
+  let decorCount=0, strokeCount=0, walking=false;
+
+  function say(text, voice=true){ speech.textContent = text; if(voice && 'speechSynthesis' in window){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='pt-BR'; u.rate=1.05; u.pitch=1.25; speechSynthesis.speak(u);}catch(e){} } }
+
+  function drawBase(){
+    const g = bctx.createLinearGradient(0,0,0,340); g.addColorStop(0,'#ffe8f4'); g.addColorStop(1,'#ffbddb');
+    bctx.clearRect(0,0,base.width,base.height); bctx.fillStyle=g; bctx.fillRect(0,0,base.width,base.height);
+    bctx.strokeStyle='rgba(255,255,255,.9)'; bctx.lineWidth=8;
+    for(let i=0;i<6;i++){ const y=34+i*46; bctx.beginPath(); bctx.moveTo(28,y); bctx.lineTo(220,y); bctx.stroke(); }
+    bctx.fillStyle='rgba(255,255,255,.55)'; bctx.beginPath(); bctx.ellipse(124,30,42,18,0,0,Math.PI*2); bctx.fill();
+  }
+  drawBase(); pctx.lineCap='round'; pctx.lineJoin='round';
+
+  function pointerPos(e){ const r=paint.getBoundingClientRect(); return {x:(e.clientX-r.left)*(paint.width/r.width), y:(e.clientY-r.top)*(paint.height/r.height)}; }
+  function startDraw(e){ if(!document.getElementById('panel-paint').classList.contains('active')) return; drawing=true; const p=pointerPos(e); pctx.beginPath(); pctx.moveTo(p.x,p.y); pctx.strokeStyle=drawColor; pctx.lineWidth=brush; pctx.lineTo(p.x+.1,p.y+.1); pctx.stroke(); strokeCount++; e.preventDefault(); }
+  function moveDraw(e){ if(!drawing) return; const p=pointerPos(e); pctx.lineTo(p.x,p.y); pctx.stroke(); e.preventDefault(); }
+  function endDraw(){ drawing=false; }
+  paint.addEventListener('pointerdown', startDraw); paint.addEventListener('pointermove', moveDraw); paint.addEventListener('pointerup', endDraw); paint.addEventListener('pointercancel', endDraw);
+
+  decorLayer.addEventListener('pointerdown', (e)=>{ if(!document.getElementById('panel-enfeites').classList.contains('active')) return; const r=decorLayer.getBoundingClientRect(); const d=document.createElement('div'); d.className='decor'; d.textContent=currentDecor; d.style.left=(e.clientX-r.left)+'px'; d.style.top=(e.clientY-r.top)+'px'; d.style.transform=`translate(-50%,-50%) rotate(${Math.floor(Math.random()*30-15)}deg)`; decorLayer.appendChild(d); decorCount++; say('Ficou uma graça!', false);});
+
+  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); btn.classList.add('active'); document.getElementById('panel-'+btn.dataset.panel).classList.add('active'); const map={paint:'Pinte minha roupa do seu jeitinho!',enfeites:'Toque na roupa para colocar enfeites!',acessorios:'Escolha acessórios lindos!',tiaras:'Agora escolha uma tiara!'}; say(map[btn.dataset.panel], false);}));
+  document.querySelectorAll('[data-color]').forEach(b=>b.addEventListener('click',()=>{drawColor=b.dataset.color; say('Adorei essa cor!', false)}));
+  document.getElementById('brushS').onclick=()=>{brush=12; say('Pincel fino escolhido!', false)};
+  document.getElementById('brushB').onclick=()=>{brush=24; say('Pincel grosso escolhido!', false)};
+
+  document.querySelectorAll('.decorPick').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.decorPick').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); currentDecor=b.dataset.decor; say('Agora toque na roupa para decorar!', false)}));
+  document.querySelectorAll('.tiaraPick').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tiaraPick').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); tiaraType=b.dataset.tiara; tiara.className='tiara '+tiaraType; if(tiaraType==='bow') tiara.innerHTML='<span></span>'; else tiara.innerHTML=''; say('Amei essa tiara!', false)}));
+  document.querySelectorAll('.accPick').forEach(b=>b.addEventListener('click',()=>{ const key=b.dataset.acc; if(key==='glasses') glasses.style.display=glasses.style.display==='block'?'none':'block'; if(key==='necklace') necklace.style.display=necklace.style.display==='block'?'none':'block'; if(key==='bag') bag.style.display=bag.style.display==='block'?'none':'block'; b.classList.toggle('selected'); say('Mais um acessório lindo!', false)}));
+  document.querySelectorAll('.shoePick').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.shoePick').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); shoeL.style.background=b.dataset.shoe; shoeR.style.background=b.dataset.shoe; say('Sapatos escolhidos!', false)}));
+
+  function evaluate(){
+    const data=pctx.getImageData(0,0,paint.width,paint.height).data; let colored=0; for(let i=3;i<data.length;i+=4){ if(data[i]>0) colored++; }
+    const cover=colored/(paint.width*paint.height);
+    let acc = 0; if(glasses.style.display==='block') acc+=8; if(necklace.style.display==='block') acc+=8; if(bag.style.display==='block') acc+=8; if(tiaraType!=='none') acc+=10;
+    const score = cover*100 + decorCount*7 + acc + Math.min(strokeCount,50)*.4;
+    if(score >= 60) return 'Ameiiiii! Meu look ficou maravilhoso, fashion e super criativo! ✨💖';
+    if(score >= 36) return 'Gostei muito! Ficou lindo! Se quiser, coloque mais detalhes e eu vou amar ainda mais! 😊';
+    return 'Humm... ficou fofinho, mas pinta mais a roupa e coloca acessórios para eu ficar encantada! 🎀';
+  }
+
+  document.getElementById('btnLife').addEventListener('click', ()=>{
+    char.classList.remove('walking'); char.classList.add('alive','talking');
+    const text = evaluate(); say(text, true); setTimeout(()=>char.classList.remove('talking'), 3500);
+  });
+
+  document.getElementById('btnWalk').addEventListener('click', ()=>{
+    if(walking) return; walking=true; char.classList.remove('alive'); char.classList.add('walking'); say('Olha eu desfilando! Tô me sentindo linda! 🌟', true);
+    wrap.style.transition='transform 4s linear'; wrap.style.transform='translateX(120px)';
+    setTimeout(()=>{ wrap.style.transform='translateX(-120px)'; }, 2000);
+    setTimeout(()=>{ wrap.style.transform='translateX(0px)'; wrap.style.transition='transform .25s ease'; char.classList.remove('walking'); char.classList.add('alive'); walking=false; say('Meu desfile ficou um arraso! Quer criar outro look pra mim? 💕', true); }, 4200);
+  });
+
+  document.getElementById('btnReset').addEventListener('click', ()=>{
+    pctx.clearRect(0,0,paint.width,paint.height); decorLayer.innerHTML=''; decorCount=0; strokeCount=0; drawColor='#ff5fa8'; brush=16;
+    glasses.style.display='none'; necklace.style.display='none'; bag.style.display='none';
+    shoeL.style.background='#ff83be'; shoeR.style.background='#ff83be';
+    document.querySelectorAll('.accPick').forEach(x=>x.classList.remove('selected'));
+    document.querySelectorAll('.shoePick').forEach((x,i)=>x.classList.toggle('selected',i===0));
+    document.querySelectorAll('.decorPick').forEach((x,i)=>x.classList.toggle('selected',i===0));
+    document.querySelectorAll('.tiaraPick').forEach(x=>x.classList.toggle('selected',x.dataset.tiara==='bow'));
+    tiaraType='bow'; tiara.className='tiara bow'; tiara.innerHTML='<span></span>';
+    char.classList.remove('alive','walking','talking'); wrap.style.transform='translateX(0)';
+    say('Tudo limpinho! Vamos criar outro look lindo! 💗', false);
+  });
+})();
+</script>
+</body>
+</html>
