@@ -2,9 +2,9 @@ name: Build Atelie Roseli Android APK
 on:
   push:
     branches: [atelie-roseli-android-apk]
+    paths-ignore:
+      - android-roseli/BUILD_STATUS.md
   workflow_dispatch:
-  pull_request:
-    branches: [main]
 permissions:
   contents: write
 jobs:
@@ -20,27 +20,40 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
-      - name: Build and record diagnostic status
+      - name: Compile with captured log
+        id: compile
         shell: bash
         run: |
           set +e
-          gradle -p android-roseli assembleDebug --stacktrace --no-daemon > /tmp/roseli-build.log 2>&1
-          CODE=$?
-          tail -130 /tmp/roseli-build.log
-          if [ "$CODE" -eq 0 ]; then
-            printf 'BUILD SUCCESSFUL\n' > android-roseli/build-diagnostic.txt
-          else
-            printf 'BUILD FAILED: exit %s\n\n' "$CODE" > android-roseli/build-diagnostic.txt
-            tail -130 /tmp/roseli-build.log >> android-roseli/build-diagnostic.txt
-          fi
-          git config user.name 'roseli-android-builder'
-          git config user.email 'actions@users.noreply.github.com'
-          git add android-roseli/build-diagnostic.txt
-          git commit -m '[skip ci] Android APK build status' || true
-          git push || true
-          exit "$CODE"
-      - uses: actions/upload-artifact@v4
+          gradle -p android-roseli assembleDebug --stacktrace --no-daemon > "$RUNNER_TEMP/roseli-build.log" 2>&1
+          result=$?
+          tail -n 110 "$RUNNER_TEMP/roseli-build.log"
+          echo "exit_code=$result" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload APK on success
+        if: steps.compile.outputs.exit_code == '0'
+        uses: actions/upload-artifact@v4
         with:
           name: Atelie-Roseli-Android-APK
           path: android-roseli/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+      - name: Save build diagnostics to repository
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p android-roseli
+          {
+            echo '# Resultado da compilação Android'
+            echo "Run ID: $GITHUB_RUN_ID"
+            echo "Exit code: ${{ steps.compile.outputs.exit_code }}"
+            echo "Workflow URL: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo '## Final do log'
+            echo '~~~'
+            if [ -f "$RUNNER_TEMP/roseli-build.log" ]; then tail -n 90 "$RUNNER_TEMP/roseli-build.log"; else echo 'Build step did not execute'; fi
+            echo '~~~'
+          } > android-roseli/BUILD_STATUS.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add android-roseli/BUILD_STATUS.md
+          git commit -m "Record Android APK build status [skip ci]" || true
+          git push || true
