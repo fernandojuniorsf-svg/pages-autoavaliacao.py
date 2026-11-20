@@ -5,6 +5,8 @@ on:
     paths-ignore:
       - android-roseli/BUILD_STATUS.md
   workflow_dispatch:
+  pull_request:
+    branches: [main]
 permissions:
   contents: write
 jobs:
