@@ -3,6 +3,8 @@ on:
   push:
     branches: [atelie-roseli-android-apk]
   workflow_dispatch:
+  pull_request:
+    branches: [main]
 permissions:
   contents: write
 jobs:
